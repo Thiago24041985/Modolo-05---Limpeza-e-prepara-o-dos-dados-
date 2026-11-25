@@ -22,3 +22,28 @@ Desenvolvi o tratamento da base de dados em Jupyter Notebook seguindo uma pipeli
 * **Python 3**
 * **Pandas** (diagnóstico de missings, imputação, categorização e padronização de schema)
 * **Jupyter Notebook / Google Colab**
+  
+
+TAREFA 02 -  # 🧹 Módulo 05 - Limpeza, Preparação de Dados e Construção de Target
+
+Repositório dedicado aos projetos práticos do **Módulo 05** do curso **Profissão: Cientista de Dados (EBAC)**, dividido em duas etapas principais: tratamento e higienização de dados públicos de saúde (**DataSUS**) e engenharia da variável resposta (*target*) para modelagem de risco de crédito (**Credit Scoring**).
+
+## 💡 Como elaborei este projeto
+
+Desenvolvi os notebooks aplicando técnicas de preparação de dados voltadas a problemas reais de negócio e saúde pública:
+
+### 1. Limpeza e Preparação de Dados — DataSUS / SINASC (`Tarefa 01`)
+* **Auditoria e Diagnóstico de Missings:** Carreguei a base de nascidos vivos (`SINASC_RO_2019.csv`, com 11.509 registros e 69 variáveis), validei a ausência de duplicatas (`.drop_duplicates()`) e mapeei o volume e o percentual de valores ausentes (`.isna().sum()`) em cada coluna.
+* **Seleção e Higienização:** Filtrei as 9 variáveis relevantes para o estudo perinatal e removi registros sem preenchimento na variável alvo `APGAR5`.
+* **Imputação Orientada ao Domínio:** Atribuí o código `9` ("Ignorado") aos missings de `ESTCIVMAE` e `CONSULTAS` conforme o dicionário do DataSUS, preenchi `QTDFILVIVO` com `0` e tratei os demais campos faltantes com base em critérios clínicos.
+* **Categorização e Padronização:** Classifiquei os escores numéricos de `APGAR5` em faixas clínicas de risco de asfixia (`normal`, `asfixia leve`, `asfixia moderada` e `asfixia severa`) e padronizei todos os nomes de colunas para **`snake_case`**.
+
+### 2. Construção da Variável Resposta (*Default*) — Risco de Crédito (`Tarefa 02`)
+* **Identificação de Atrasos em Base Larga:** A partir da tabela de histórico mensal (`pagamentos_largo.csv`, de `mes_0` a `mes_24`), utilizei o método `.isin()` para mapear mensalmente os episódios críticos de inadimplência (*default*).
+* **Agregação de Desempenho (24 meses):** Consolidei os indicadores mensais por cliente ao longo da janela de 24 meses (`sum(axis=1)`), classificando como **mau pagador (`True`)** quem apresentou ao menos um episódio de default e **bom pagador (`False`)** os demais.
+* **Filtro de Expostos e Cruzamento de Bases:** Integrei a base cadastral de solicitações (`application_record.csv`) com a base de pagamentos para filtrar apenas clientes efetivamente expostos ao risco de crédito (excluindo propostas recusadas/desistências) e consolidar a tabela final pronta para modelagem preditiva.
+
+## 🛠️ Tecnologias Utilizadas
+* **Python 3**
+* **Pandas** (auditoria de missings, imputação, categorização, operações horizontais `axis=1` e junção de tabelas)
+* **Jupyter Notebook / Google Colab**
